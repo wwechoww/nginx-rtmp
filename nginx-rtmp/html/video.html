@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.mainContainer {
+		        display: block;
+		        width: 1024px;
+		        margin-left: auto;
+		        margin-right: auto;
+		    }
+		
+		    .urlInput {
+		        display: block;
+		        width: 100%;
+		        margin-left: auto;
+		        margin-right: auto;
+		        margin-top: 8px;
+		        margin-bottom: 8px;
+		    }
+		
+		    .centeredVideo {
+		        display: block;
+		        width: 100%;
+		        height: 576px;
+		        margin-left: auto;
+		        margin-right: auto;
+		        margin-bottom: auto;
+		    }
+		
+		    .controls {
+		        display: block;
+		        width: 100%;
+		        text-align: left;
+		        margin-left: auto;
+		        margin-right: auto;
+		        margin-top: 8px;
+		        margin-bottom: 10px;
+		    }
+		
+		    .logcatBox {
+		        border-color: #CCCCCC;
+		        font-size: 11px;
+		        font-family: Menlo, Consolas, monospace;
+		        display: block;
+		        width: 100%;
+		        text-align: left;
+		        margin-left: auto;
+		        margin-right: auto;
+		    }
+		</style>
+	</head>
+	<script src="https://cdn.bootcss.com/flv.js/1.5.0/flv.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<body>
+		<div><input type="text" id='urlId' value="" /> <button type="button" id="butPlay">播放</button></div>
+		<div class="mainContainer">
+			<video name="videoElement" class="centeredVideo" id="videoElement" controls width="50%" height="576" autoplay='true'>
+				Your browser is too old which doesn't support HTML5 video.
+			</video>
+			
+			<video name="videoElement1" class="centeredVideo" id="videoElement1" controls width="50%" height="576" autoplay="autoplay">
+				Your browser is too old which doesn't support HTML5 video.
+			</video>
+		</div>
+	</body>
+
+	<script>
+		console.log('start')
+		console.log(flvjs.isSupported())
+		if (flvjs.isSupported()) {
+			play();
+			play1();
+
+		}
+		$("#butPlay").click(function(event){
+			play();
+			play1();
+		})
+		function play(){
+			var us = $("#urlId").val();
+			console.info(new Date(), us)
+			if (!us) {
+				us = 'mystream'
+			}
+			var videoElement = document.getElementById('videoElement');
+			var flvPlayer = flvjs.createPlayer({
+				type: 'flv',
+				enableWorker: true, //浏览器端开启flv.js的worker,多进程运行flv.js
+				isLive: true, //直播模式
+				hasAudio: false, //关闭音频             
+				hasVideo: true,
+				stashInitialSize: 128,
+				enableStashBuffer: true, //播放flv时，设置是否启用播放缓存，只在直播起作用。
+				url: ' http://127.0.0.1:8080/live?port=1935&app=myapp&stream=mystream'
+			});
+			
+			flvPlayer.attachMediaElement(videoElement);
+			flvPlayer.load();
+			flvPlayer.play();
+		}
+		
+		function play1(){
+			var us = $("#urlId").val();
+			console.info(new Date(), us)
+			if (!us) {
+				us = 'bd815aed477d45528d5305e877845774_5'
+			}
+			var videoElement = document.getElementById('videoElement1');
+			var flvPlayer = flvjs.createPlayer({
+				type: 'flv',
+				enableWorker: true, //浏览器端开启flv.js的worker,多进程运行flv.js
+				isLive: true, //直播模式
+				hasAudio: false, //关闭音频             
+				hasVideo: true,
+				stashInitialSize: 128,
+				enableStashBuffer: true, //播放flv时，设置是否启用播放缓存，只在直播起作用。
+				url: ' http://127.0.0.1:8080/live?port=1935&app=myapp&stream=bd815aed477d45528d5305e877845774_5'
+			});
+			
+			flvPlayer.attachMediaElement(videoElement);
+			flvPlayer.load();
+			//flvPlayer.play();
+		}
+	
+	</script>
+</html>
